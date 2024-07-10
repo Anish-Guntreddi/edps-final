@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { supabase } from '@/utils/supabase/client';
 import { useUser } from '@clerk/nextjs';
 import { Loader } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { toast } from 'sonner';
 
@@ -13,6 +14,7 @@ function AddNewListing() {
     const [coordinates, setCoordinates]=useState();
     const {user} = useUser();
     const [loader,setLoader]=useState(false);
+    const router = useRouter();
     const nextHandler=async()=>{
       setLoader(true)
         const { data, error } = await supabase
@@ -27,6 +29,7 @@ function AddNewListing() {
           setLoader(false)
           console.log("New Data added", data);
           toast("New Address added for listing")
+          router.replace('edit-listing/'+data[0].id)
         }
 
         if(error){
