@@ -20,6 +20,18 @@ import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import FileUpload from '../_components/FileUpload'
 import { Loader } from 'lucide-react'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog"
+  
   
 
 function EditListing({params}) {
@@ -62,8 +74,10 @@ function EditListing({params}) {
         if(data){
             console.log(data);
             toast("Listing updated and Published")
+            setLoading(false)
         }
         for(const image of images){
+            setLoading(true)
             const file = image;
             const fileName = Date.now().toString()
             const fileExt = fileName.split('.').pop();
@@ -78,7 +92,12 @@ function EditListing({params}) {
                 setLoading(false)
                 toast('Error while uploading images')
             }
+
+    
+
+
             else{
+
                 const imageUrl = process.env.NEXT_PUBLIC_IMAGE_URL+fileName;
                 const {data, error} = await supabase
                 .from('listingImages')
@@ -86,6 +105,8 @@ function EditListing({params}) {
                     {url:imageUrl, listing_id:params?.id}
                 ])
                 .select();
+
+
                 if(error){
                     setLoading(false)
                 }
@@ -95,6 +116,22 @@ function EditListing({params}) {
         
     }
 
+
+    const publishButtonHandler=async()=>{
+        setLoading(true)
+        const { data, error } = await supabase
+        .from('listing')
+        .update({ active: true })
+        .eq('id', params.id)
+        .select()
+
+        if(data){
+            setLoading(false)
+            toast('Listing published!')
+        }
+
+
+    }
   return (
     <div className='px-10 md:px-20 myy-10'>
       <h2 className='font-bold text-2xl'>Enter some more details about your listing</h2>
@@ -201,8 +238,24 @@ function EditListing({params}) {
                 className='w-500 h-500' setImages={(value)=>setImages(value)} imageList={listing?.listingImages}/>
             </div>
         <div className='flex gap-7 justify-end mt-5'>
-        <Button className="text-purple-500 border-primary" variant="outline">Save</Button>
-        <Button disabled={loading} className="text-white font-semibold bg-primary" variant="outline">{loading?<Loader className=''/>:'Save and Publish'}</Button>
+        <Button disabled={loading} className="text-primary font-semibold border-primary" variant="outline">{loading?<Loader className=''/>:'Save'}</Button>
+        <AlertDialog>
+  <AlertDialogTrigger asChild><Button type="button" disabled={loading} className="text-white font-semibold bg-primary" variant="outline">{loading?<Loader className=''/>:'Save and Publish'}</Button></AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Ready to Publish?</AlertDialogTitle>
+      <AlertDialogDescription>
+        Confirm your listing and double check to make sure everything is correct
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction onClick={()=>publishButtonHandler()}>
+        {loading?<Loader className='animate-spin'/>:'Continue'}</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+
     </div>
 
     </div>
@@ -214,3 +267,5 @@ function EditListing({params}) {
 }
 
 export default EditListing
+
+
