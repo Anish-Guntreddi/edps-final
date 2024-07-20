@@ -47,6 +47,7 @@ function EditListing({params}) {
     },[user]);
 
     const verifyUser=async()=>{
+        console.log(params)
         const {data, error}= await supabase
         .from('listing')
         .select('*, listingImages(listing_id,url)')
@@ -54,7 +55,6 @@ function EditListing({params}) {
         .eq("id", params.id)
 
         if(data){
-            console.log(data);
             setListing(data[0])
             if(data.length <= 0){
                 router.replace('/');
@@ -64,7 +64,6 @@ function EditListing({params}) {
 
     const onSubmitHandler = async(formValue)=>{
         setLoading(true);
-
         const { data, error } = await supabase
         .from('listing')
         .update(formValue)
@@ -72,7 +71,6 @@ function EditListing({params}) {
         .select();
 
         if(data){
-            console.log(data);
             toast("Listing updated and Published")
             setLoading(false)
         }
@@ -141,8 +139,7 @@ function EditListing({params}) {
         profileImage:user?.imageUrl,
         fullName:user?.fullName,
     }}
-    onSubmit={(values) =>{
-        console.log(values);
+    onSubmit={(values) => {
         onSubmitHandler(values);
     }}
     >
@@ -156,14 +153,14 @@ function EditListing({params}) {
         <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
             <div className='flex flex-col gap-2'>
                 <h2 className='text-lg text-slate-500'>Rent or Sell?</h2>
-                <RadioGroup defaultValue={listing?.type?listing?.type:"Sell"} onValueChange={(v) => values.type = v}>
+                <RadioGroup defaultValue={listing?.type?listing?.type:"sell"} onValueChange={(v) => values.type = v}>
                 <div className="flex items-center space-x-2">
-                <RadioGroupItem value="Rent" id="Rent" />
+                <RadioGroupItem value="rent" id="rent" />
                 <Label htmlFor="Rent">Rent</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                <RadioGroupItem value="Sell" id="Sell" />
-                <Label htmlFor="Sell">Sell</Label>
+                <RadioGroupItem value="sell" id="sell" />
+                <Label htmlFor="sell">Sell</Label>
                 </div>
                 </RadioGroup>
 

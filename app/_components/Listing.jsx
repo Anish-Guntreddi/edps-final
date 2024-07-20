@@ -2,9 +2,10 @@ import { Button } from '@/components/ui/button'
 import { Bath, BedDouble, MapPin, Ruler, Search } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState } from 'react'
+import FilterSection from './FilterSection'
 import GoogleAddressSearch from './GoogleAddressSearch'
 
-function Listing({listing, handleSearchClick, searchedAddress}) {
+function Listing({listing, handleSearchClick, searchedAddress, setBathCount, setBedCount, setParkingCount, setHomeType}) {
     const[address, setAddress] = useState([]);
   return (
     <div>
@@ -12,6 +13,7 @@ function Listing({listing, handleSearchClick, searchedAddress}) {
         <GoogleAddressSearch selectedAddress={(v)=> {searchedAddress(v); setAddress(v)}} setCoordinates={(v)=> console.log(v)}/>
         <Button onClick={handleSearchClick} className="flex gap-2"><Search className='h-4 w-4'/>Search</Button>
         </div>
+        <FilterSection setBathCount={setBathCount} setBedCount={setBedCount} setParkingCount={setParkingCount} setHomeType={setHomeType}/>
         {address&&<div className='px-3'>
             <h2 className='text-lg'>
                  Found <span className='font-bold'>{listing.length}</span> Result in <span className='text-primary font-bold'>{address.label}</span></h2>

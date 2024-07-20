@@ -5,9 +5,14 @@ import { toast } from 'sonner'
 import Listing from './Listing'
 
 function ListingMapView({type}) {
-
     const[searchedAddress,setSearchedAddress] = useState([])
     const[listing,setListing] = useState([])
+    const[bedCount, setBedCount] = useState(0);
+    const[bathCount, setBathCount] = useState(0);
+    const[parkingCount, setParkingCount] = useState(0);
+    const[homeType, setHomeType] = useState()
+
+
     useEffect(()=> {
         getLatestListing()
     }, [])
@@ -22,9 +27,8 @@ function ListingMapView({type}) {
         .eq('active', true)
         .eq('type', type)
         .order('id',{ascending:false})
-
         if(data){
-            console.log(data)
+            console.log(type)
             setListing(data)
         }
 
@@ -35,7 +39,7 @@ function ListingMapView({type}) {
     const handleSearchclick=async()=> {
         console.log(searchedAddress);
         const searchTerm = searchedAddress?.value?.structured_formatting?.main_text
-        const{data, error}= await supabase
+        let query = supabase
         .from('listing')
         .select(`*, listingImages(
             url,
@@ -43,9 +47,17 @@ function ListingMapView({type}) {
         )`)
         .eq('active', true)
         .eq('type', type)
+        .gte('bedroom', bedCount)
+        .gte('bathroom', bathCount)
+        .gte('parking', parkingCount)
         .like('address', '%'+searchTerm+'%')
         .order('id',{ascending:false})
 
+        if(homeType){
+            query = query.eq('propertyType', homeType)
+        }
+
+        const{data, error}= await query
         if(data){
             setListing(data);
         }
@@ -54,7 +66,7 @@ function ListingMapView({type}) {
   return (
     <div className='grid grid-cols-1 md:grid-cols-2'>
         <div>
-            <Listing listing={listing} handleSearchClick={handleSearchclick} searchedAddress={(v)=>setSearchedAddress(v)}/>
+            <Listing listing={listing} handleSearchClick={handleSearchclick} searchedAddress={(v)=>setSearchedAddress(v)} setBathCount={setBathCount} setBedCount={setBedCount} setParkingCount={setParkingCount} setHomeType={setHomeType}/>
         </div>
         <div>
             Map
