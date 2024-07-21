@@ -5,12 +5,12 @@ import React, { useState } from 'react'
 import FilterSection from './FilterSection'
 import GoogleAddressSearch from './GoogleAddressSearch'
 
-function Listing({listing, handleSearchClick, searchedAddress, setBathCount, setBedCount, setParkingCount, setHomeType}) {
+function Listing({listing, handleSearchClick, searchedAddress, setBathCount, setBedCount, setParkingCount, setHomeType, setCoordinates}) {
     const[address, setAddress] = useState([]);
   return (
     <div>
         <div className='p-3 flex gap-6'>
-        <GoogleAddressSearch selectedAddress={(v)=> {searchedAddress(v); setAddress(v)}} setCoordinates={(v)=> console.log(v)}/>
+        <GoogleAddressSearch selectedAddress={(v)=> {searchedAddress(v); setAddress(v)}} setCoordinates={setCoordinates}/>
         <Button onClick={handleSearchClick} className="flex gap-2"><Search className='h-4 w-4'/>Search</Button>
         </div>
         <FilterSection setBathCount={setBathCount} setBedCount={setBedCount} setParkingCount={setParkingCount} setHomeType={setHomeType}/>
