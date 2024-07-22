@@ -31,7 +31,6 @@ function ListingMapView({type}) {
         .eq('type', type)
         .order('id',{ascending:false})
         if(data){
-            console.log(type)
             setListing(data)
         }
 
@@ -40,7 +39,6 @@ function ListingMapView({type}) {
         }
     }
     const handleSearchclick=async()=> {
-        console.log(searchedAddress);
         const searchTerm = searchedAddress?.value?.structured_formatting?.main_text
         let query = supabase
         .from('listing')
@@ -72,7 +70,7 @@ function ListingMapView({type}) {
             <Listing listing={listing} handleSearchClick={handleSearchclick} searchedAddress={(v)=>setSearchedAddress(v)} setBathCount={setBathCount} setBedCount={setBedCount} setParkingCount={setParkingCount} setHomeType={setHomeType} setCoordinates={setCoordinates}/>
         </div>
         <div className='fixed right-10 md:w-[400px] lg:[500px] xl:w-[740px]'>
-            <GoogleMapSection coordinates={coordinates}/>
+            <GoogleMapSection listing={listing} coordinates={coordinates}/>
         </div>
     </div>
   )
