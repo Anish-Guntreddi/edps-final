@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Head from "next/head";
 import Image from "next/image";
 import ListingMapView from "./_components/ListingMapView";
 

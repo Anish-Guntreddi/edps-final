@@ -44,6 +44,7 @@ function GoogleMapSection({coordinates, listing}) {
       zoom={10}
       onLoad={onLoad}
       onUnmount={onUnmount}
+      gestureHandling="greedy"
     >
     {listing.map((item,index) => (
         <MarkerItem key={index} item={item}/>

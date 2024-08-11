@@ -69,7 +69,7 @@ function ListingMapView({type}) {
         <div>
             <Listing listing={listing} handleSearchClick={handleSearchclick} searchedAddress={(v)=>setSearchedAddress(v)} setBathCount={setBathCount} setBedCount={setBedCount} setParkingCount={setParkingCount} setHomeType={setHomeType} setCoordinates={setCoordinates}/>
         </div>
-        <div className='fixed right-10 md:w-[400px] lg:[500px] xl:w-[740px]'>
+        <div className='fixed right-10 md:w-[400px] lg:[500px] xl:w-[650px]'>
             <GoogleMapSection listing={listing} coordinates={coordinates}/>
         </div>
     </div>

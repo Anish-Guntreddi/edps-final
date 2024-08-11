@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Bath, BedDouble, MapPin, Ruler, Search } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useState } from 'react'
 import FilterSection from './FilterSection'
 import GoogleAddressSearch from './GoogleAddressSearch'
@@ -21,6 +22,7 @@ function Listing({listing, handleSearchClick, searchedAddress, setBathCount, set
         </div>}
         <div className='grid grid-cols-1 md:grid grid-cols-2 gap-5'>
             {listing?.length>0? listing.map((item, index) => (
+                <Link href={'/view-listing/'+item.id}>
                 <div className='p-3 hover:border hover:border-primary cursor-pointer rounded-lg'>
                     <Image src={item.listingImages[0].url} width={800} height={150}
                     className="rounded-lg object-cover h-[170px]" alt=""/>
@@ -42,8 +44,9 @@ function Listing({listing, handleSearchClick, searchedAddress, setBathCount, set
                         {item?.area}
                     </h2>
                     </div>
-
+                
                 </div>
+                </Link>
             ))
         :[1,2,3,4,5,6,7,8].map((item, index) => (
             <div key={index} className='h-[230px] w-full bg-slate-200 animate-pulse'>

@@ -27,9 +27,6 @@ function Header() {
         <li className={`'hover:text-primary font-medium text-sm cursor-pointer'${path=='/'&&'text-primary'}`}>For Sale</li>
           </Link>
           <Link href={'/'}>
-        <li className={`'hover:text-primary font-medium text-sm cursor-pointer'${path=='/'&&'text-primary'}`}>For Rent</li>
-          </Link> 
-          <Link href={'/'}>
         <li className={`'hover:text-primary font-medium text-sm cursor-pointer'${path=='/'&&'text-primary'}`}>Agent Finder</li>
           </Link>         
         </ul>  
